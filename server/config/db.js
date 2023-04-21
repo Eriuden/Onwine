@@ -1,4 +1,9 @@
-const { appendFile } = require("fs");
+const mongoose = require("mongoose")
 
-appendFile.use(cors({origin: process.env.CLIENT_URL}))
+mongoose
+.connect(
+    "mongodb+srv://" + process.env.DB_USER_PASS + "@cluster0.iodcc.mongodb.net/Onwine",
+)
+.then(()=> console.log("connecté à MongoDB"))
+.catch((err) => console.log("échec de connexion", err))
 
