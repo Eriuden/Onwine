@@ -39,6 +39,10 @@ const wineSchema = mongoose.Schema(
             ],
             required:true,
         },
+
+        likedBy: {
+            type: [String]
+        },
     },
 
     {timestamps: true},
