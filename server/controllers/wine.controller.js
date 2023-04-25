@@ -39,9 +39,9 @@ module.exports.createWine = async (req,res) => {
     }
 
     const newWine = new wineModel({
-        name,
+        wineName,
         year,
-        Cépage,
+        cépage,
         comments:[],
         likedBy: [],
     })
@@ -54,5 +54,175 @@ module.exports.createWine = async (req,res) => {
     }
 }
 
+module.exports.updateWine = (req,res) => {
+    if (!ObjectId.isValid(req.params.id))
+    return res.status(400).send("ID unknown:" + req.params.id)
+
+    const updatedRecord = {
+        wineName: req.body.wineName,
+        year: req.body.year,
+        cépage: req.body.cépage,
+    }
+
+    wineModel.findByIdAndUpdate(
+        req.params.id,
+        {$set: updatedRecord},
+        { new:true},
+        (err,docs) => {
+            if (!err) res.send(docs)
+            else console.log("update error:" + err)
+        }
+    )
+}
+
+module.exports.deleteWine = (req,res) => {
+    if (!ObjectId.isValid(req.params.id))
+    return res.status(400).send("ID unknown:" + req.params.id)
+
+    wineModel.findOneAndRemove(req.params.id, (err,docs) => {
+        if (!err) res.send(docs)
+        else console.log("delete error:" + err)
+    })
+}
+
+module.exports.likeWine = async (req,res) => {
+    if (!ObjectId.isValid(req.params.id))
+    return res.status(400).send("ID unknown:" + req.params.id)
+
+    try {
+        await wineModel.findByIdAndUpdate(
+            req.params.id,
+            {
+                $addToSet: {likedBy: req.body.id}
+            },
+            { new:true},
+            (err,docs) => {
+                if (err) return res.status(400).send(err)
+            }
+        )
+        await userModel.findByIdAndUpdate(
+            req.body.id,
+            {
+                $addToSet: {like: req.params.id}
+            },
+            { news:true},
+            (err,docs) => {
+                if (!err) res.send(docs)
+                return res.status(400).send(err)
+            }
+        )
+    } catch(err) {
+        return res.status(400).send(err)
+    }
+}
+
+module.exports.unlikeWine = async (req,res) => {
+    if (!ObjectId.isValid(req.params.id))
+    return res.status(400).send("ID unknown:" + req.params.id)
+
+    try {
+        await wineModel.findByIdAndUpdate(
+            req.params.id,
+            {
+                $pull: {likedBy: req.body.id}
+            },
+            { new:true},
+            (err,docs) => {
+                if (err) return res.status(400).send(err)
+            }
+        )
+        await userModel.findByIdAndUpdate(
+            req.body.id,
+            {
+                $pull: {like: req.params.id}
+            },
+            { news:true},
+            (err,docs) => {
+                if (!err) res.send(docs)
+                return res.status(400).send(err)
+            }
+        )
+    } catch(err) {
+        return res.status(400).send(err)
+    }
+}
+
+module.exports.comment = (req,res) => {
+    if (!ObjectId.isValid(req.params.id))
+    return res.status(400).send("ID unknown:" + req.params.id)
+
+    try {
+        return wineModel.findByIdAndUpdate(
+            req.params.id,
+            {
+                $push: {
+                    comments: {
+                        commenterId: req.body.commenterId,
+                        commenterName: req.body.commenterName,
+                        text: req.body.text,
+                        timeStamp: new Date().getTime(),
+                    },
+                },
+            },
+            { new:true},
+            (err,docs) => {
+                if (!err) res.send(docs)
+                else return res.status(400).send(err)
+            }
+        )
+    } catch(err) {
+        return res.status(400).send(err)
+    }
+}
+
+module.exports.editComment = (req,res) => {
+    if (!ObjectId.isValid(req.params.id))
+    return res.status(400).send("ID unknown:" + req.params.id)
+
+    try {
+        return wineModel.findById(req.params.id, (err,docs) => {
+            const theComment = docs.comments.find((comment) => 
+            comment._id.equals(req.body.commentId)
+            )
+
+            if(!theComment) return res.status(400).send("commentaire introuvable")
+
+            theComment.text = req.body.text 
+
+            return docs.save((err)=> {
+                if (!err) return res.status(200).send(docs)
+                return res.status(500).send(err)
+            })
+        })
+    } catch {
+        return res.send(400).send(err)
+    }
+}
+
+module.exports.deleteComment = (req,res) => {
+    if (!ObjectId.isValid(req.params.id))
+    return res.status(400).send("ID unknown:" + req.params.id )
+
+    try {
+        return wineModel.findByIdAndUpdate(
+            req.params.id,
+            {
+                $pull: {
+                    comments: {
+                        _id: req.body.commentId,
+                    },
+                },
+            },
+
+            { new:true},
+            (err,docs) => {
+                if (!err) return res.send(docs)
+                else return res.status(400).send(err)
+            }
+        )
+    } catch (err) {
+        return res.status(400).send(err)
+    }
+}
 
 

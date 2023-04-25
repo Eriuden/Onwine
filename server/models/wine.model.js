@@ -7,7 +7,7 @@ const wineSchema = mongoose.Schema(
             required:true
         },
 
-        name: {
+        wineName: {
             type:String,
             required:true
         },
@@ -23,7 +23,7 @@ const wineSchema = mongoose.Schema(
             required:true
         },
 
-        Cépage: {
+        cépage: {
             type:String,
             required:true
         },
