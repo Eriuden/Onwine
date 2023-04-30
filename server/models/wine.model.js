@@ -18,7 +18,7 @@ const wineSchema = mongoose.Schema(
             required:true
         },
 
-        Year: {
+        year: {
             type:Number,
             required:true
         },
