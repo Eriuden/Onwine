@@ -1,10 +1,10 @@
 import React, { useState} from "react"
 import axios from "axios"
-import connexion from "./connexion"
+import Connexion from "./Connexion"
 
 import React from 'react'
 
-export const inscription = () => {
+export const Inscription = () => {
   const [formSubmit, setFormSubmit] = useState(false)
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
@@ -70,7 +70,7 @@ export const inscription = () => {
             { formSubmit ? (
                 <>
                     <h4>Votre inscription s'est bien déroulée</h4>
-                    <connexion/>
+                    <Connexion/>
                 </>
             ):(
                 
