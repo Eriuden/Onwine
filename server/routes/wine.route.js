@@ -14,3 +14,5 @@ router.patch("unlike-wine",wineController.unlikeWine)
 router.patch("/comment-wine/:id", wineController.comment)
 router.patch("/edit-comment-wine", wineController.editComment)
 router.patch("/delete-comment-wine", wineController.deleteComment)
+
+module.exports = router

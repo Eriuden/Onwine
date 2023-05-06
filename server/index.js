@@ -35,6 +35,7 @@ app.get("/jwtid", requireAuth, (req,res) => {
 })
 
 app.use("/api/user", userRoutes)
+app.use("/api/wine", wineRoutes)
 
 app.listen(process.env.PORT, ()=> {
     console.log(`Je suis sur le port ${process.env.PORT}`)
