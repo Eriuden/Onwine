@@ -39,9 +39,9 @@ module.exports.createWine = async (req,res) => {
     }
 
     const newWine = new wineModel({
-        wineName,
-        year,
-        cépage,
+        wineName: req.file !=null ? "./uploads/wine" + fileName : "",
+        year: req.body.year,
+        cépage: req.body.cépage,
         comments:[],
         likedBy: [],
     })

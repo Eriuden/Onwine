@@ -10,12 +10,15 @@ import { UserProfile } from './pages/UserProfile';
 function App() {
   return (
     <div className="App">
+
+      <Header/>
+
       <Routes>
         <Route exact path={"/"} element={<Home/>}/>
         <Route exact path={"/connexion"} element={<Connexion/>}/>
         <Route exact path={"/inscription"} element={<Inscription/>}/>
         <Route exact path={"/winepage/:id"} element={<WinePage/>}/>
-        <Route exact path={"/user-profile/:id"} element={<WinePage/>}/>
+        <Route exact path={"/user-profile/:id"} element={<UserProfile/>}/>
       </Routes>
     </div>
   );
