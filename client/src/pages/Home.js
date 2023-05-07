@@ -16,7 +16,7 @@ export const Home = () => {
     /* window.innerHeight = hauteur intérieure de la fenètre en px
      document.documentElement.scrollTop = en px aussi,
      à combien de px on est du haut de l'élément parent principal de la page
-     sachant qu'on est plus en haut, et bien, si on scroll
+     sachant qu'on est plus en haut, forcément, dès qu'on scroll vers le bas
      scrollingElement c'est l'élement qui fait défiler le doc
      C'est en quelque sorte documentElement mais dans le contexte d'un scroll
      scrollHeight, la hauteur dont il a besoin pour tout afficher
